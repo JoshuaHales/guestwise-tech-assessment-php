@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Campaign;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -14,8 +15,8 @@ abstract class AbstractGuestActivitySeeder extends Seeder
     public function seedGuestActivity(string $table, array $randRange): void
     {
         $chunkSize = 10000;
+        $campaigns = Campaign::get();
         $timeSlots = $this->generateTimeSlots();
-        $campaigns = \App\Models\Campaign::get();
 
         DB::transaction(function () use ($table, $randRange, $campaigns, $chunkSize, $timeSlots) {
             $this->command->withProgressBar($campaigns, function ($campaign) use ($table, $randRange, $chunkSize, $timeSlots) {
@@ -59,19 +60,18 @@ abstract class AbstractGuestActivitySeeder extends Seeder
     private function generateTimeSlots(): array
     {
         static $timeSlots = null;
-
+        
         if (!$timeSlots) {
             $timeSlots = [];
-
             for ($hour = 0; $hour < 24; $hour++) {
                 for ($minute = 0; $minute < 60; $minute++) {
                     for ($second = 0; $second < 60; $second++) {
-                        $timeSlots[] = $hour . ':' . $minute . ':' . $second;
+                        $timeSlots[] = sprintf('%02d:%02d:%02d', $hour, $minute, $second);
                     }
                 }
             }
         }
-
+        
         return $timeSlots;
     }
 }

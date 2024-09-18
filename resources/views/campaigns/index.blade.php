@@ -36,37 +36,37 @@
             <thead>
                 <tr>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'name', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'name', 'order_by' => ($sort_by === 'name' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Campaign Name
                         </a>
                         @include('partials.sort-icons', ['sort' => 'name', 'order' => $order_by])
                     </th>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'brand', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'brand_id', 'order_by' => ($sort_by === 'brand_id' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Brand Name
                         </a>
-                        @include('partials.sort-icons', ['sort' => 'brand', 'order' => $order_by])
+                        @include('partials.sort-icons', ['sort' => 'brand_id', 'order' => $order_by])
                     </th>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'impressions', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'impressions_count', 'order_by' => ($sort_by === 'impressions_count' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Impressions
                         </a>
-                        @include('partials.sort-icons', ['sort' => 'impressions', 'order' => $order_by])
+                        @include('partials.sort-icons', ['sort' => 'impressions_count', 'order' => $order_by])
                     </th>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'interactions', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'interactions_count', 'order_by' => ($sort_by === 'interactions_count' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Interactions
                         </a>
-                        @include('partials.sort-icons', ['sort' => 'interactions', 'order' => $order_by])
+                        @include('partials.sort-icons', ['sort' => 'interactions_count', 'order' => $order_by])
                     </th>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'conversions', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'conversions_count', 'order_by' => ($sort_by === 'conversions_count' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Conversions
                         </a>
-                        @include('partials.sort-icons', ['sort' => 'conversions', 'order' => $order_by])
+                        @include('partials.sort-icons', ['sort' => 'conversions_count', 'order' => $order_by])
                     </th>
                     <th scope="col">
-                        <a href="{{ route('campaigns.index', ['sort' => 'conversion_rate', 'order' => $order_by]) }}">
+                        <a href="{{ route('campaigns.index', array_merge(request()->all(), ['sort_by' => 'conversion_rate', 'order_by' => ($sort_by === 'conversion_rate' && $order_by === 'asc') ? 'desc' : 'asc'])) }}">
                             Conversion Rate (%)
                         </a>
                         @include('partials.sort-icons', ['sort' => 'conversion_rate', 'order' => $order_by])
@@ -95,7 +95,7 @@
     </div>
 
     <div class="my-5">
-        {{ $campaigns->links() }}
+        {{ $campaigns->appends(request()->query())->links() }}
     </div>
 </div>
 @endsection
