@@ -75,22 +75,20 @@
             </thead>
             <tbody>
                 @foreach($campaigns as $campaign)
-                <tr>
-                    <td>{{ $campaign->name }}</td>
-                    <td>{{ $campaign->brand->name }}</td>
-                    <td>
-                        {{-- # of impressions in date range --}}
-                    </td>
-                    <td>
-                        {{-- # of interactions in date range --}}
-                    </td>
-                    <td>
-                        {{-- # of conversions in date range --}}
-                    </td>
-                    <td>
-                        {{-- % conversion rate in date range --}}
-                    </td>
-                </tr>
+                    <tr>
+                        <td>{{ $campaign->name }}</td>
+                        <td>{{ $campaign->brand->name }}</td>
+                        <td>{{ $campaign->impressions_count }}</td>
+                        <td>{{ $campaign->interactions_count }}</td>
+                        <td>{{ $campaign->conversions_count }}</td>
+                        <td>
+                            @if($campaign->interactions_count > 0)
+                                {{ number_format(($campaign->conversions_count / $campaign->interactions_count) * 100, 2) }}%
+                            @else
+                                0%
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
