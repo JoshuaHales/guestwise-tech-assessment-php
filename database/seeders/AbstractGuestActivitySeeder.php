@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\Campaign;
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Carbon;
 
 abstract class AbstractGuestActivitySeeder extends Seeder
 {
@@ -13,8 +14,8 @@ abstract class AbstractGuestActivitySeeder extends Seeder
      */
     public function seedGuestActivity(string $table, array $randRange): void
     {
-        $campaigns = \App\Models\Campaign::get();
         $chunkSize = 10000;
+        $campaigns = Campaign::get();
         $timeSlots = $this->generateTimeSlots();
 
         DB::transaction(function () use ($table, $randRange, $campaigns, $chunkSize, $timeSlots) {
@@ -58,16 +59,19 @@ abstract class AbstractGuestActivitySeeder extends Seeder
      */
     private function generateTimeSlots(): array
     {
-        $timeSlots = [];
-
-        for ($hour = 0; $hour < 24; $hour++) {
-            for ($minute = 0; $minute < 60; $minute++) {
-                for ($second = 0; $second < 60; $second++) {
-                    $timeSlots[] = $hour . ':' . $minute . ':' . $second;
+        static $timeSlots = null;
+        
+        if (!$timeSlots) {
+            $timeSlots = [];
+            for ($hour = 0; $hour < 24; $hour++) {
+                for ($minute = 0; $minute < 60; $minute++) {
+                    for ($second = 0; $second < 60; $second++) {
+                        $timeSlots[] = sprintf('%02d:%02d:%02d', $hour, $minute, $second);
+                    }
                 }
             }
         }
-
+        
         return $timeSlots;
     }
 }
